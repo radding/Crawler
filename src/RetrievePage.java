@@ -1,7 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 
 public class RetrievePage implements Runnable{
@@ -12,8 +18,19 @@ public class RetrievePage implements Runnable{
 		manager = master;
 	}
 	
+	public RetrievePage(String test){
+//		manager = master;
+		try {
+			myPage = new URL(test);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void run(){
-		myPage = manager.urls.remove();
+		if(manager != null)
+			myPage = manager.urls.remove();
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(myPage.openStream()));
 			
@@ -31,6 +48,10 @@ public class RetrievePage implements Runnable{
 	}
 	
 	private void getURLS(){
-		
+		Document things = Jsoup.parse(content);
+		Elements links = things.select("a[href]");
+		for(Element i : links){
+			System.out.println("links: "+i.attr("abs:href"));
+		}
 	}
 }
