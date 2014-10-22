@@ -6,5 +6,6 @@ public class Main {
 		test.run();
 //		new MainWindow();
 //		MainWindow.createAndShow();
+		System.out.println("I ended");
 	}
 }
